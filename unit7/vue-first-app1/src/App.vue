@@ -5,15 +5,9 @@
         </header>
         <new-friend @add-contact="addContact"></new-friend>
         <ul>
-            <friend-contact 
-                v-for="friend in friends" 
-                :key="friend.id"
-                :id="friend.id"
-                :name="friend.name" 
-                :phone-number="friend.phone"
-                :email-address="friend.email"
-                :is-favorite="friend.isFavorite"
-                @toggle-favorite="toggleFavoriteStatus">
+            <friend-contact v-for="friend in friends" :key="friend.id" :id="friend.id" :name="friend.name"
+                :phone-number="friend.phone" :email-address="friend.email" :is-favorite="friend.isFavorite"
+                @toggle-favorite="toggleFavoriteStatus" @delete="deleteContact">
             </friend-contact>
             <!-- string olmayan bir js değeri gireceksen v-bind'a çevir prop'u -->
         </ul>
@@ -47,7 +41,7 @@ export default {
             const selectedFriend = this.friends.find(friend => friend.id === friendId);
             selectedFriend.isFavorite = !selectedFriend.isFavorite;
         },
-        addContact(name, phone, email){
+        addContact(name, phone, email) {
             const newFriendContact = {
                 id: new Date().toISOString(),
                 name: name,
@@ -56,7 +50,10 @@ export default {
                 isFavorite: false,
             };
             this.friends.push(newFriendContact);
-        }
+        },
+        deleteContact(friendId) {
+            this.friends = this.friends.filter(friend => friend.id !== friendId);
+        },
     },
 }
 </script>
@@ -128,17 +125,20 @@ header {
     border-color: #ec3169;
     box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.26);
 }
+
 #app input {
-  font: inherit;
-  padding: 0.15rem;
+    font: inherit;
+    padding: 0.15rem;
 }
+
 #app label {
-  font-weight: bold;
-  margin-right: 1rem;
-  width: 7rem;
-  display: inline-block;
+    font-weight: bold;
+    margin-right: 1rem;
+    width: 7rem;
+    display: inline-block;
 }
+
 #app form div {
-  margin: 1rem 0;
+    margin: 1rem 0;
 }
 </style>
